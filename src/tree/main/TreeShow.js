@@ -27,7 +27,7 @@ class TreeShow extends React.Component {
     }
   }
 
-  getWidthForHorizelLine = memoize(this.getObjeckForHorizelLine)
+  getWidthForHorizelLine = memoize(this.getObjeckForHorizelLine);
 
   flattenData = [];
 
@@ -42,6 +42,7 @@ class TreeShow extends React.Component {
     let arr = [];
     for (let i = 0; i < tree.length; i++) {
       const element = tree[i];
+      //当存在children时
       if (element.children && element.children.length > 0) {
         arr[i] = (
           <div
@@ -116,9 +117,10 @@ class TreeShow extends React.Component {
     const { models } = this.props;
     let temp = {};
     let arr = flatTree(treeData);
+    //arr是数组类型
     for (let i = 0; i < arr.length; i++) {
       temp[arr[i][models.value]] = arr[i]
-    }
+    }//temp是obj类型进行包裹ID为每个独立点的识别，方便之后利用pid（记录父亲的id）进行配合来找到他的父亲
     return temp
   }
 
@@ -185,9 +187,9 @@ class TreeShow extends React.Component {
 
   // 横线宽度
   calHorizontalLineWidth(element) {
-    const cellMarginLeft = this.calCellMarginLeft(element)
+    const cellMarginLeft = this.calCellMarginLeft(element);
     if (element.pid && !this.props.cellWidth) {
-      let parentElement = this.flattenData[element.pid]
+      let parentElement = this.flattenData[element.pid];
       return `${cellMarginLeft - this.calCellWidth(parentElement) * 0.5}px`
     } else {
       return `${cellMarginLeft - this.props.cellWidth * 0.5}px`
@@ -195,9 +197,9 @@ class TreeShow extends React.Component {
   }
 
   calHorizontalLeft(element) {
-    const cellMarginLeft = this.calCellMarginLeft(element)
+    const cellMarginLeft = this.calCellMarginLeft(element);
     if (element.pid && !this.props.cellWidth) {
-      let parentElement = this.flattenData[element.pid]
+      let parentElement = this.flattenData[element.pid];
       return `-${cellMarginLeft - this.calCellWidth(parentElement) * 0.5}px`
     } else {
       return `-${cellMarginLeft - this.props.cellWidth * 0.5}px`
@@ -205,9 +207,9 @@ class TreeShow extends React.Component {
   }
 
   calCellMarginLeft(element) {
-    const { cellMarginLeft } = this.props
+    const { cellMarginLeft } = this.props;
     if (element.pid) {
-      let parentElement = this.flattenData[element.pid]
+      let parentElement = this.flattenData[element.pid];
       return this.calCellWidth(parentElement) * 0.5 + cellMarginLeft
     } else {
       return 0
@@ -215,7 +217,7 @@ class TreeShow extends React.Component {
   }
 
   calCellWidth(element) {
-    const { models, fontSize } = this.props
+    const { models, fontSize } = this.props;
     if (this.props.cellWidth) {
       return this.props.cellWidth
     }
@@ -223,8 +225,8 @@ class TreeShow extends React.Component {
   }
 
   renderActiveStyle(element) {
-    const { activeCell } = this.state
-    const { activeCellColor, models, activeCellBgColor } = this.props
+    const { activeCell } = this.state;
+    const { activeCellColor, models, activeCellBgColor } = this.props;
     if (activeCell === element[models.value]) {
       return {
         color: activeCellColor,
@@ -234,45 +236,45 @@ class TreeShow extends React.Component {
   }
 
   handleClick = element => {
-    const { cellClick, models } = this.props
-    cellClick(element)
+    const { cellClick, models } = this.props;
+    cellClick(element);
     this.setState({
       activeCell: element[models.value]
     })
-  }
+  };
 
   findYaxisNumber(item) {
-    const currentObj = this.findCurrentObj(item)
-    let num = 0
+    const currentObj = this.findCurrentObj(item);
+    let num = 0;
     const iteraTwo = arr => {
       for (let i = 0; i < arr.length; i++) {
-        const element = arr[i]
+        const element = arr[i];
         if (element.children && element.children.length > 0) {
-          num++
+          num++;
           iteraTwo(element.children)
         } else {
           num++
         }
       }
-    }
+    };
     // 这里在循环你里面的定位已经是树形结构里面的单独的一个节点了，
     // 所以只考虑当前的这个节点 在计算的时候，应该包括哪些子节点在内，所以
     // 这里的iteraTwo(Load.initial(currentObj.children))的逻辑不需要带到上面的迭代里
     if (currentObj.children.length > 1) {
-      iteraTwo(Load.initial(currentObj.children))
+      iteraTwo(Load.initial(currentObj.children));
       return num + 1
     } else {
       return 1
     }
   }
-
+//不知道有啥用的函数，之后可能有用
   findCurrentObj(item) {
-    const { models, treeData } = this.props
-    const mainKey = models.value
-    let result
+    const { models, treeData } = this.props;
+    const mainKey = models.value;
+    let result;
     const iteraOne = list => {
       for (let i = 0; i < list.length; i++) {
-        const element = list[i]
+        const element = list[i];
         if (element[mainKey] === item[mainKey]) {
           result = element
         } else {
@@ -281,8 +283,8 @@ class TreeShow extends React.Component {
           }
         }
       }
-    }
-    iteraOne(treeData)
+    };
+    iteraOne(treeData);
     return result
   }
 }
