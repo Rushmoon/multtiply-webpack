@@ -1,5 +1,6 @@
 # multtiply-webpack
 webpack的各种配置的实验，首先结合webpack-dev-server实现本地调试，然后尝试分模块进行调试，react
+- 1.使用了webpack-dev-server插件，满足了本地调试的需要，当npm start的时候，生成JS文件是存在于缓存中的，不会显示在dist中
 
 #### 运行
 - 1.npm i

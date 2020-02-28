@@ -1,0 +1,66 @@
+{
+  "entry": [
+    {
+      "entryPath": "../src/hrzz/login/login/main/index.js",
+      "template": "../src/hrzz/login/login/main/index.html"
+    },
+    {
+      "entryPath": "../src/hrzz/login/third-login/main/index.js",
+      "template": "../src/hrzz/login/third-login/main/index.html"
+    },
+    {
+      "entryPath": "../src/hrzz/login/third-login-hr/main/index.js",
+      "template": "../src/hrzz/login/third-login-hr/main/index.html"
+    },
+    {
+      "entryPath": "../src/hrzz/login/receive-offer/main/index.js",
+      "template": "../src/hrzz/login/receive-offer/main/index.html"
+    },
+    {
+      "entryPath": "../src/hrzz/login/refuse-offer/main/index.js",
+      "template": "../src/hrzz/login/refuse-offer/main/index.html"
+    },
+    {
+      "entryPath": "../src/hrzz/corehr-mobile/**/main/index.js",
+      "template": "../indexMb.html"
+    },
+    {
+      "entryPath": "../src/hrzz/attend-mobile/**/main/index.js",
+      "template": "../indexMb.html"
+    },
+    {
+      "entryPath": "../src/hrzz/entry-mobile/**/main/index.js",
+      "template": "../indexMb.html"
+    },
+    {
+      "entryPath": "../src/hrzz/quit-mobile/**/main/index.js",
+      "template": "../indexMb.html"
+    },
+    {
+      "entryPath": "../src/hrzz/dimission-mobile/**/main/index.js",
+      "template": "../indexMb.html"
+    },
+    {
+      "entryPath": "../src/hrzz/psn-mobile/**/main/index.js",
+      "template": "../indexMb.html"
+    },
+    {
+      "entryPath": "../src/hrzz/myteam-mobile/**/main/index.js",
+      "template": "../indexMb.html"
+    },
+    {
+      "entryPath": "../src/hrzz/mngopinion-mobile/**/main/index.js",
+      "template": "../indexMb.html"
+    },
+    {
+      "entryPath": "../src/hrzz/myopinion-mobile/**/main/index.js",
+      "template": "../indexMb.html"
+    },
+    ".../src/tree/main/index.js"
+  ],
+  "default-template": "../index.html",
+  "dll-entry": {
+    "entry": [ ],
+    "watch": false
+  }
+}
