@@ -13,6 +13,7 @@ function writeFile(root, filePath, content) {
     let len = filePathList.length;
 
     let parentPath = path.normalize(root);
+    //将路径规范化（多个反斜杠\被规范成一个反斜杠）
 
     if(!this.isFileExist(parentPath)) {
         try {

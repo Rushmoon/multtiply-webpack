@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ReactTree from './tree/main/index.js';
+import ReactTree from './applet/simpleTree/tree/main/index.js';
 
 
 ReactDOM.render((

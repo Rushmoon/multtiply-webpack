@@ -19,7 +19,6 @@ module.exports = (type = "entry") => {
                 })
             })
         }else {
-            console.log(glob.sync(item));
             files = files.concat(glob.sync(item))
         }
     });
@@ -27,11 +26,11 @@ module.exports = (type = "entry") => {
         let key = "";
         let entryPath = "";
         if(typeof item === 'object'){
-            key = item.entryPath.replace('../src/','').slice(0,-3);
+            key = item.entryPath.replace('./src/','').slice(0,-3);
             entryTemplateMap[key] = item.template;
             entryPath = item.entryPath;
         }else {
-            key = item.replace('../src/','').slice(0,-3);
+            key = item.replace('./src/','').slice(0,-3);
             entryPath = item;
         }
         entry[key] = entryPath
