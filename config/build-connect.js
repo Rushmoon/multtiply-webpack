@@ -5,7 +5,7 @@ const getEnter = require('./enter');
 const hammer = require('./hammer');
 const config = require('../config.json');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 //在默认情况下，此插件将删除output.path 在每次成功重建后删除webpack 目录中的所有文件以及所有未使用的webpack 的静态资源（基本不需要传参，会直接只想output.path）
 const CopyPlugin = require('copy-webpack-plugin');
 //webpack拷贝插件，拷贝config目录里面对应的所有静态资源,或者一些组件
@@ -36,132 +36,76 @@ Object.keys(enterMap).map((key)=>{
 });
 console.log("resultEnter",resultEnter);
 
-
+let firstStructure = true;
+//用于判断是否是第一次构建，如果是第一次构建的话，删除之前的dist
 // 之后会切割入口文件以提升速度，这个变量就是存储切割后的入口数组
 let entryList = [];
 // 切割入口文件的时候用到的临时中转变量
 let cache = {};
+//切割成每20个文件一个对象，然后将这些对象依次进栈，执行的时候按顺序出栈，直到栈空为止
+//切割入栈
+let enterMapArray = Object.keys(resultEnter);
+enterMapArray.map((key,index)=>{
+    cache[key] = resultEnter[key];
+    if(index%10 === 0){
+        entryList.push(cache);
+        cache = {};
+    } else if(enterMapArray.length-1 === index && cache!=={}) {
+        entryList.push(cache)
+    }
+});
+runList(entryList.shift());
+//函数启动入口，递归直到栈空
+function runList(enterObj) {
+    structure(enterObj).then(()=>{
+        if(entryList.length > 0){
+            structure(entryList.shift());
+        }
+        else {
+            console.log("全部打包完成");
+        }
+    })
+}
+function structure(entry) {
+    return new Promise((resolve, reject) => {
+        let currentPlugin = [ ...Plugins ];
+        //创建对应这组入口临时的一个webpack配置，
+        // 然后运行
+        if(firstStructure){
+            firstStructure = false;
+            //第一组出栈时，要清除dist中原有的，创建一个新的，所以此时用cleanwebpackplugin插件，来进行删除
+            currentPlugin.unshift(new CleanWebpackPlugin({
+                verbose:true
+            }));
+        }
+        //循环将要成为webpack中的entry（入口配置）的entry，为他们分别建立模板，配置需要使用htmlwebpackplugin插件
+        //首先时要配置默认的，其次是配置存在指定模板的吗
+        Object.keys(entry).map((key)=>{
+            let htmlOption = {
+                template:path.join(__dirname,config["default-template"]),
+                filename:`${key}.html`,
+                inject: true,
+                chunks:[ key ]
+                // 当webpack的配置的entry是多个时chunks默认会将所有的entry中的入口的js全部引入，所以此时，我们需要配置下，只让他引入对应的即可
+            };
+            if(enterTemplateMap[key]){
+                htmlOption.template = path.join(__dirname,enterTemplateMap[key]);
+            }
+            currentPlugin.push(
+                new HtmlWebpackPlugin(htmlOption)
+            )
+        });
+        webpackProdConfig.plugins = currentPlugin;
+        webpackProdConfig.entry = entry;
+        webpack(webpackProdConfig,(err,starts)=>{
+            console.log("stats:",starts);
+            if(err){
+                reject();
+                console.log("webpack构建报错");
+            }
+            // let time = starts.
+            resolve();
+        })
+    });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-// // 项目根目录
-// const projectPath = path.join(__dirname, '../');
-//
-// // 输入参数，hrhi  hrwa 什么的
-// const inputParam = [].slice.call(process.argv, 2);
-//
-// let runType = inputParam[0];
-//
-// if(runType === 'patch') {
-//     inputParam.shift();
-// }
-//
-// // 参数拼装的正则，要是没有参数这个值为false
-//
-// // 页面入口对象和模版集合
-// let entry = getEntry();
-// // 模块入口对象
-// let libEntry = getEntry('lib');
-// // 入口对象
-// let entryMap = entry.entry;
-// // 自定义模版map
-// let entryTemplateMap = entry.template;
-// // 模块入口对象
-// let libEntryMap = libEntry.entry;
-//
-// //过滤lib
-// let libEntryMapModule = {};
-// if (inputParam && inputParam.length > 0) {
-//     let reg = new RegExp(`^(${inputParam})`);
-//     for (let key in libEntryMap) {
-//         if (reg.test(key)) {
-//             libEntryMapModule[key] = libEntryMap[key];
-//         }
-//     }
-// } else {
-//     libEntryMapModule = libEntryMap;
-// }
-//
-// if(Object.keys(libEntryMapModule).length <= 0) {
-//     libEntryMapModule = libEntryMap;
-// }
-//
-// // 临时中间变量，用于过滤参数选择的入口
-// let midTrans = {};
-// // 通过过滤入口的key值，找到对应的map
-// Object.keys(entryMap).map((key) => {
-//     if (inputParam && inputParam.length > 0) {
-//         let ifCurrentKeyIsEntry = false;
-//         for (let p of inputParam) {
-//             if (key.includes(p)) {
-//                 ifCurrentKeyIsEntry = true;
-//                 break;
-//             }
-//         }
-//         if (ifCurrentKeyIsEntry) {
-//             midTrans[key] = entryMap[key];
-//         }
-//     } else {
-//         midTrans[key] = entryMap[key];
-//     }
-// });
-// // console.log('==== 入口 ====');
-// if(Object.keys(midTrans).length > 0) {
-//     entryMap = midTrans;
-// }
-// // 拥有页面的入口的js对应的插件列表
-// let pagePlugins = [ ...webpackProdConfig.plugins ];
-// // 没有页面的入口的js的对应的插件列表
-// let libPlugins = [ ...webpackProdConfig.plugins ];
-//
-// // 之后会切割入口文件以提升速度，这个变量就是存储切割后的入口数组
-// let entryList = [];
-// // 切割入口文件的时候用到的临时中转变量
-// let cache = {};
-//
-// // 拿到所有入口的key值
-// let entryMapKeysList = Object.keys(entryMap);
-// // 所有的编译花费的时间数组
-// let costTime = [];
-// // 只运行一次的行为标志,主要用在了复制和clean插件上
-// let firstTime = true;
-//
-// let allStartTime = Date.now();
-//
-// // 通过遍历，将数据量很大的入口对象，切割成每30个入口文件为一个的数组
-// entryMapKeysList.map((key, index) => {
-//     cache[key] = entryMap[key];
-//
-//     if (index % 20 === 0) {
-//         entryList.push(cache);
-//         cache = {};
-//         return;
-//     } else if (entryMapKeysList.length - 1 === index) {
-//         entryList.push(cache);
-//     }
-// });
-
-// 运行链式的编译
-// runList(entryList.shift());
+}
