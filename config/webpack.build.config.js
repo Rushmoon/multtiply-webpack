@@ -66,6 +66,23 @@ module.exports = {
                 }
             },
             {
+                test: /\.css$/,
+                exclude: /node_modules/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules:false
+                        }
+                    }
+                ]
+            },
+            /*这样是避免 css-modules 对 antd 的样式进行处理，否则会造成antd 的样式的不匹配。
+              所以对 antd 的样式不使用 css-modules，{modules:false}。
+              对于其他不影响的使用 css-modules，{modules:true}
+             */
+            {
                 test: /\.less$/,
                 exclude: /node_modules/,
                 use: [
