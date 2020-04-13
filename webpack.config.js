@@ -3,7 +3,7 @@ var path =require('path');
 module.exports = {
     devtool: "inline-source-map",
     entry:{
-        app:path.join(__dirname,'src','index.js')
+        app:path.join(__dirname,'src','applet/DotaExcesices/Ker/main/index.js')
     },
     output:{
         filename:'bundle.js',
