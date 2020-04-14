@@ -1,5 +1,5 @@
 import React from "react";
-import './index.css'
+import './index.less'
 
 export default class TreeShow extends React.Component {
     constructor() {
@@ -13,8 +13,8 @@ export default class TreeShow extends React.Component {
     render() {
         const {skill} = this.props;
 
-        return <div className={'skill'}>
-            <div className={'skillContent'}>{skill}</div>
+        return <div className='skill'>
+            <div className='skillContent'>{skill}</div>
         </div>
     }
 }

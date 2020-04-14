@@ -1,5 +1,9 @@
 var webpack = require('webpack');
 var path =require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+//单独分解出一个css 可以用map追踪
+const friendlyErrorPlugin = require("friendly-errors-webpack-plugin");
 module.exports = {
     devtool: "inline-source-map",
     entry:{
@@ -7,7 +11,8 @@ module.exports = {
     },
     output:{
         filename:'bundle.js',
-        path:path.join(__dirname,'dist')
+        path:path.join(__dirname,'dist'),
+        publicPath: "/"
     },
     module: {//module配置如何去处理模块
         //1.rule 配置模块的读取和解析规则
@@ -19,9 +24,60 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/
+            },
+            {
+                test: /\.less$/,
+                exclude: /node_modules/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'postcss-loader',
+                    'less-loader'
+                ]
+            },{
+                test: /\.css$/,
+                exclude: /node_modules/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            mode: 'local',
+                            modules: true,
+                            localIdentName: '[name]--[local]--[hash:base64:5]'
+                        }
+                    },
+                    'postcss-loader'
+                ]
+            },{
+                test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz|xlsx)(\?.+)?$/,
+                exclude: /favicon\.png$/,
+                use: [{
+                    loader: 'url-loader'
+                }]
             }
         ]
     },
+    plugins: [
+        new HtmlWebpackPlugin({                 //添加在这里
+            template: path.resolve(__dirname,'src','applet/DotaExcesices/Ker/main/index.html'),
+            filename: 'index.html',
+            inject: 'body'
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name].css'
+        }),
+        new HtmlWebpackPlugin({                 //添加在这里
+            template: path.resolve(__dirname, 'src/indexOld.html'),
+            filename: 'index.html',
+            inject: 'body'
+        }),
+        // new happyPack({
+        //     loaders: ['babel-loader'],
+        //     threads: 2
+        // }),
+        new friendlyErrorPlugin()
+    ],
     //alias  配置项通过别名来把原导入路径映射成一个新的导入路径。
     //extensions 在导入语句没带文件后缀时，Webpack 会自动带上后缀后去尝试访问文件是否存在。
     resolve: {

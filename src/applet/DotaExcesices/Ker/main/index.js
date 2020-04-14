@@ -1,8 +1,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-import Skill from '../skill'
-import ReactTree from "../../../simpleTree/tree/container";
-
+import Skill from '../components/skillSquare'
+import '../components/skillSquare/index.less'
 class Invoker extends React.Component {
     constructor(){
         super();
@@ -16,11 +15,14 @@ class Invoker extends React.Component {
     }
 
     render() {
-        return
-            <Skill {...this.props} />
+        return <div>
+            <Skill
+                skill = {'qqq'}
+            />
+        </div>
 
     }
 }
 ReactDom.render((
     <Invoker />
-),document.getElementById('app'))
+),document.getElementById('app'));
