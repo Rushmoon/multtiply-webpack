@@ -8,6 +8,10 @@ class Invoker extends React.Component {
     constructor(){
         super();
         this.state = {
+            randomIndex:{
+                skillName:'???',
+                image:null
+            },
             skillStatus:[],
             eleMap:{
                 'Q':'ice',
@@ -59,6 +63,10 @@ class Invoker extends React.Component {
             this.printW()
         }else if (e.keyCode === 114){
             this.printMake()
+        }else if(e.keyCode === 102){
+            this.printF()
+        }else if(e.keyCode === 100){
+            this.printD()
         }
         else {
             console.log(e.key);
@@ -66,7 +74,8 @@ class Invoker extends React.Component {
         }
     };
     onclick = ()=>{
-        console.log('print so the start')
+        console.log('print so the start');
+        this.randomSkill();
     };
     printQ = ()=>{
         console.log('printQ');
@@ -101,10 +110,23 @@ class Invoker extends React.Component {
             skillStatus:result
         })
     };
-    printMake = ()=>{
-        console.log('makeMagic');
-        console.log(this.state.skillStatus);
-        let currentEle = [...this.state.skillStatus];
+    printD = () =>{
+        if(this.state.DIndex.skillName === this.state.randomIndex.skillName){
+            console.log("成功");
+            this.randomSkill();
+        }else {
+            console.log("失败");
+        }
+    };
+    printF = () =>{
+        if(this.state.FIndex.skillName === this.state.randomIndex.skillName){
+            console.log("成功");
+            this.randomSkill();
+        }else {
+            console.log("失败");
+        }
+    };
+    tranferMagic = (currentEle)=>{
         let magic = '';
         if(new Set(currentEle).size !== currentEle.length){
             let temp = '';
@@ -124,29 +146,53 @@ class Invoker extends React.Component {
         if(magic !== 'QWE'|| magic ==='') {
             magic = currentEle[0] + currentEle[1] + currentEle[2]
         }
+        return magic
+    };
+    printMake = ()=>{
+        console.log('makeMagic');
+        console.log(this.state.skillStatus);
+        let currentEle = [...this.state.skillStatus];
+        let magic = this.tranferMagic(currentEle);
         let currentD = {...this.state.DIndex};
         let map = {...this.state.map};
         let skillName = map[magic];
-        if(!currentD.image){
-            this.setState({
-                DIndex:{
-                    skillName:skillName,
-                    image:images[skillName]
-                },
-            });
+        if(skillName === this.state.DIndex.skillName){
+            console.log("重复的咒语")
         }else {
-            this.setState({
-                FIndex:currentD,
-                DIndex:{
-                    skillName:skillName,
-                    image:images[skillName]
-                },
-            });
+            if(!currentD.image){
+                this.setState({
+                    DIndex:{
+                        skillName:skillName,
+                        image:images[skillName]
+                    },
+                });
+            }else {
+                this.setState({
+                    FIndex:currentD,
+                    DIndex:{
+                        skillName:skillName,
+                        image:images[skillName]
+                    },
+                });
+            }
         }
-
         console.log(magic)
     };
-    
+    randomSkill = ()=>{
+       let initMap = ['Q','W','E'];
+       let randomMap = [];
+       for(let i =0;i<3;i++){
+          randomMap.push(initMap[Math.floor(Math.random()*3)]);
+       }
+       let RandomMagic = this.tranferMagic(randomMap);
+       let skillName = this.state.map[RandomMagic];
+        this.setState({
+            randomIndex:{
+                skillName:skillName,
+                image:images[skillName]
+            },
+        });
+    };
     render() {
         return <div>
             <div className='head'>
@@ -162,8 +208,8 @@ class Invoker extends React.Component {
             <div className={'randomBody'}>
                 <Skill
                     className = {'skillBox'}
-                    // image = {images.ice}
-                    skill = {'???'}
+                    image = {this.state.randomIndex.image}
+                    skill = {this.state.randomIndex.skillName}
                 />
             </div>
             <If condition = {this.state.skillStatus.length > 0}>
