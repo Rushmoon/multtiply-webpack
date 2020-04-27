@@ -64,7 +64,8 @@
     "watch": false
   },
   "copy": [
-    {"from": "./src/hrzz/public","to": "./hrzz/public"},
+    {"from": "./src/applet/DotaExcesices/Ker/images","to": "./applet/DotaExcesices/Ker/images"},
+    {"from": "./src/applet/animation/translate/images","to": "./applet/animation/translate/images"},
     {"from": "./src/publicFunction","to": "./publicFunction","exclude": true}
   ]
 }

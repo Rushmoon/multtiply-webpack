@@ -3,6 +3,7 @@
   "plugins": [
     "jsx-control-statements",
     "@babel/plugin-proposal-object-rest-spread",
-    "@babel/plugin-transform-runtime"
+    "@babel/plugin-transform-runtime",
+    "transform-react-display-name"
   ]
 }
