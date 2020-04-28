@@ -56,7 +56,7 @@
       "entryPath": "./src/hrzz/myopinion-mobile/**/main/index.js",
       "template": "./indexMb.html"
     },
-    "./src/applet/simpleTree/tree/main/index.js"
+    "../src/applet/**/main/index.js"
   ],
   "default-template": "./index.html",
   "dll-entry": {
