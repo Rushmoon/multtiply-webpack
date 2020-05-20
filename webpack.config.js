@@ -7,7 +7,7 @@ const friendlyErrorPlugin = require("friendly-errors-webpack-plugin");
 module.exports = {
     devtool: "inline-source-map",
     entry:{
-        app:path.join(__dirname,'src','applet/DotaExcesices/Ker/main/index.js')
+        app:path.join(__dirname,'src','applet/animation/translate/main/index.js')
     },
     output:{
         filename:'bundle.js',

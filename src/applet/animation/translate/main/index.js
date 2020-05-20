@@ -2,40 +2,81 @@ import { CSSTransitionGroup } from 'react-transition-group' // ES6
 //实现css动画
 import React from "react";
 import ReactDOM from "react-dom";
+import "./index.less"
 class TodoList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {items: ['hello', 'world', 'click', 'me']};
+        this.state = {
+            items: ['hello', 'world', 'click', 'me'],
+            show:false
+        };
         this.handleAdd = this.handleAdd.bind(this);
+        this.getCssClss = this.getCssClss.bind(this);
+        this.showOrHidden = this.showOrHidden.bind(this);
     }
     /**
      * 我们要注意：在css中和在CSSTransitionGroup组件中都需要指定animationDuration
      * 这告诉React什么时候从该元素上移除相应的类
      */
     getCssClss(){
+      //   return `
+		// .detail-enter {
+		//   height: 3px;
+		//   opacity: 0.01;
+		// }
+		// .detail-enter.detail-enter-active {
+		//   opacity: 1;
+		//   height:300px;
+		//   transition: opacity,height 500ms ease-in;
+		// }
+      //   //当你点击了hello节点的时候，那么该元素将会被移除，它会首先被添加example-leave,
+      //   //然后添加example-leave-active这个class
+		// .detail-leave {
+		//   opacity: 1;
+		//   height:300px;
+		// }
+		// .detail-leave.detail-leave-active {
+		//   opacity: 0.01;
+		//   height:3px;
+		//   transition: opacity,height 300ms ease-in;
+		// }
+		// .detail-appear {
+		//   opacity: 0.01;
+		//   height:3px;
+		// }
+		// .detail-appear.detail-appear-active {
+		//   opacity: 1;
+		//   height:300px;
+		//   transition: opacity,height .5s ease-in;
+		// }
+  	// `
         return `
-		.example-enter {
+		.detail-enter {
+		  height: 3px !important;
 		  opacity: 0.01;
 		}
-		.example-enter.example-enter-active {
+		.detail-enter.detail-enter-active {
+		  height: 300px;
 		  opacity: 1;
-		  transition: opacity 500ms ease-in;
+		  transition: all 500ms ease-in;
 		}
         //当你点击了hello节点的时候，那么该元素将会被移除，它会首先被添加example-leave,
         //然后添加example-leave-active这个class
-		.example-leave {
+		.detail-leave {
 		  opacity: 1;
+		  height:300px;
 		}
-		.example-leave.example-leave-active {
+		.detail-leave.detail-leave-active {
 		  opacity: 0.01;
-		  transition: opacity 300ms ease-in;
+		  height:3px !important;
+		  transition: all 300ms ease-in;
 		}
-		.example-appear {
+		.detail-appear {
 		  opacity: 0.01;
+		  height:3px;
 		}
-		.example-appear.example-appear-active {
-		  opacity: 1;
-		  transition: opacity .5s ease-in;
+		.detail-appear.detail-appear-active {
+		  transition: all .5s ease-in;
 		}
   	`
     }
@@ -58,18 +99,33 @@ class TodoList extends React.Component {
         newItems.splice(i, 1);
         this.setState({items: newItems});
     }
-
+    showOrHidden(){
+        const show = this.state.show;
+        if(show === true){
+            this.setState({
+                show:false
+            })
+          }else {
+            this.setState({
+                show:true
+            })
+          }
+    };
     /**
      * 在这个组件中，当我们为CSSTransitionGroup添加子元素的时候，那么在下一帧它会被添加
      * example-enter和example-enter-active这两个class，你可以通过打断点查看。这是基于我们
      * 指定的transitionName属性来判断的。
      */
     render() {
+        const show = this.state.show;
         const items = this.state.items.map((item, i) => (
             <div key={item} onClick={() => this.handleRemove(i)}>
                 {item}
             </div>
         ));
+        const hidden = show?(
+            <div className={"showItem"}>should be hidden item</div>
+        ):null;
         /**
          *(1)CSSTransitionGroup提供了一个transitionAppear属性用于在组件第一次被挂载的时候添加动画。
          *默认情况下，在组件第一次被挂载的时候我们的transitionAppear被设置为false。
@@ -83,18 +139,18 @@ class TodoList extends React.Component {
         return (
             <div>
                 <style dangerouslySetInnerHTML={{ __html: this.getCssClss() }} />
-                <button onClick={this.handleAdd}>Add Item</button>
+                <button onClick={this.showOrHidden}>Show Item</button>
                 <CSSTransitionGroup
-                    transitionName="example"
+                    transitionName="detail"
                     transitionEnterTimeout={500}
                     transitionLeaveTimeout={300}
                     transitionAppear={true}
                     transitionAppearTimeout={500}>
-                    {items}
+                    {hidden}
                 </CSSTransitionGroup>
             </div>
         );
     }
 }
 
-ReactDOM.render(<TodoList/>,document.getElementById("react-content"));
+ReactDOM.render(<TodoList/>,document.getElementById("app"));
