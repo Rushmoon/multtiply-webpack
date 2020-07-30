@@ -236,7 +236,7 @@ class CustomAction {
 
 ```js
 class ParentAction {
-    abc = 'lingyun'
+    abc = 'asuka'
     show = function() {
         console.log(this.abc)
     }
