@@ -45,7 +45,7 @@ function start({root, component, model}) {
 		// 此处动态生成reducer
 		// redux的初始值是model里配置的data
 		reducers[item] = (state = models[item].data, action) => {
-			console.log(action)
+			console.log(action);
 			let actionType = action.type;
 			// 需要过滤掉redux自身内部的action
 			let ifHasPlaceName = actionType.indexOf('/') >= 0 && actionType.indexOf('@redux') < 0;
