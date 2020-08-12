@@ -38,7 +38,6 @@ function copyDir(){
 function runCompire(m) {
     let reg = new RegExp(m.join('|'));
     let tempEntry = {};
-    console.log(reg);
     Object.keys(entries).map(item=>{
         if(reg.test(item)){
             tempEntry[item] = entries[item]
@@ -52,4 +51,19 @@ function runCompire(m) {
         entry:entries
     };
     runConfig.plugins.push()
+}
+
+
+
+function getTemplate(templateMap) {
+
+    let templateContentMap = {};
+    templateContentMap['default'] = path.join(projectPath, config['default-template'])
+
+    Object.keys(templateMap).map((item) => {
+        let templatePath = templateMap[item];
+        templateContentMap[item] = path.join(projectPath, templatePath)
+    });
+
+    return templateContentMap
 }
