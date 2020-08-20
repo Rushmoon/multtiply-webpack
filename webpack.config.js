@@ -7,12 +7,14 @@ const friendlyErrorPlugin = require("friendly-errors-webpack-plugin");
 module.exports = {
     devtool: "inline-source-map",
     entry:{
-        app:path.join(__dirname,'src','applet/animation/compliateAboutGSAP/main/index.js')
+        'applet/animation/compliateAboutGSAP':path.join(__dirname,'src','applet/animation/compliateAboutGSAP/main/index.js'),
+        'applet/simpleTree/tree':path.join(__dirname,'src','applet/simpleTree/tree/main/index.js'),
     },
     output:{
-        filename:'bundle.js',
-        path:path.join(__dirname,'dist'),
-        publicPath: "/"
+        filename: '[name].js',
+        path: path.join(__dirname, '../dist'),
+        publicPath: '/',
+        chunkFilename: '[name][chunkhash:8].js'
     },
     module: {//module配置如何去处理模块
         //1.rule 配置模块的读取和解析规则
@@ -67,10 +69,17 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: '[name].css'
         }),
-        new HtmlWebpackPlugin({                 //添加在这里
-            template: path.resolve(__dirname, 'src/indexOld.html'),
-            filename: 'index.html',
-            inject: 'body'
+        new HtmlWebpackPlugin({//添加在这里
+            template: path.resolve(__dirname, 'index.html'),
+            filename: 'applet/animation/compliateAboutGSAP/main/index.html',
+            inject: 'body',
+            chunks: ['applet/animation/compliateAboutGSAP']
+        }),
+        new HtmlWebpackPlugin({//添加在这里
+            template: path.resolve(__dirname, 'index.html'),
+            filename: 'applet/simpleTree/tree/main/index.html',
+            inject: 'body',
+            chunks: ['applet/simpleTree/tree']
         }),
         // new happyPack({
         //     loaders: ['babel-loader'],

@@ -55,8 +55,8 @@ function threeNumberCount(nums) {
 
 
 var threeSum = function(nums) {
-    let res = []
-    let hash = {}
+    let res = [];
+    let hash = {};
     for (let i = 0; i < nums.length - 2; i++) { // 每个人
         for (let j = i + 1; j < nums.length - 1; j++) { // 依次拉上其他每个人
             if (hash[nums[j]] !== undefined) { // 已经有合适自己的两人组

@@ -41,5 +41,85 @@ wordList = ["hot","dot","dog","lot","log"]
  * @return {string[][]}
  */
 var findLadders = function(beginWord, endWord, wordList) {
+    function isMatchOne(str1,str2) { //判断两个字符串是否相差一个字符，顺序必须一致，长度必须一致
+        let j = 0;
+        for(let i=0;i<str1.length;i++){
+             if(str1.charAt(i) !== str2.charAt(i)){
+                 j++
+             }
+        }
+        return j === 1
+    }
+    let topRoot = {};
+    function createTree(root,lastList,currentWord) {
+        // console.log('currentWord',currentWord,lastList);
+        root.leafLength = 0;
+        if(currentWord === endWord){
+            root.leafLength = 1;
+            root.isLeaf = true
+        }else {
+            for(let index = lastList.length - 1; index >= 0; index--){
+                if(isMatchOne(lastList[index],currentWord)){
+                    root.leafLength += 1;
+                    root[lastList[index]] = {};
+                    lastList.splice(index,1);
+                }
+            }
+            for(let name in root){
+                if(typeof root[name] === 'object'){
+                    createTree(root[name],[].concat(lastList),name)
+                }
 
+            }
+
+        }
+    }
+    function searchTree(root,result,index){
+        if(root.leafLength > 1){
+            let currentArr = [];
+            for(let name in root){
+                if(typeof root[name] === 'object'){
+                    currentArr.push(name);
+                    if(index === 0){
+                        let newArr = result.concat([name]);
+                        result.push(newArr)
+                    }else {
+                        let newArr = result[index-1].concat([name]);
+                        result.push(newArr)
+                    }
+                }
+            }
+            if(index){
+                result.splice(index-1,1)
+            }else {
+                result.splice(0,1)
+            }
+            for(let x = 1;x<=root.leafLength;x++){
+                searchTree(root[currentArr[x-1]],result,index?index+x-1:x)
+            }
+        }else {
+            for(let name in root){
+                if(typeof root[name] === 'object'){
+                    if(index === 0){
+                        result.push(name)
+                    }else {
+                        result[index-1].push(name)
+                    }
+                    searchTree(root[name],result,index);
+                    break
+                }
+            }
+            
+            
+        }
+    }
+    let index = wordList.indexOf(beginWord);
+    if(index !== -1){
+        wordList.splice(index,1);
+    }
+    createTree(topRoot,wordList,beginWord);
+     let result =[];
+     searchTree(topRoot,result,0);
+    console.log(result)
 };
+findLadders("hit","cog",["hot","dot","dog","lot","log","cog"]);
