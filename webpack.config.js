@@ -7,8 +7,8 @@ const friendlyErrorPlugin = require("friendly-errors-webpack-plugin");
 module.exports = {
     devtool: "inline-source-map",
     entry:{
-        'applet/animation/compliateAboutGSAP':path.join(__dirname,'src','applet/animation/compliateAboutGSAP/main/index.js'),
-        'applet/simpleTree/tree':path.join(__dirname,'src','applet/simpleTree/tree/main/index.js'),
+        'applet/reactDeeplearn/importtool':path.join(__dirname,'src','applet/reactDeeplearn/importtool/main/index.js'),
+        // 'applet/simpleTree/tree':path.join(__dirname,'src','applet/simpleTree/tree/main/index.js'),
     },
     output:{
         filename: '[name].js',
@@ -71,16 +71,16 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({//添加在这里
             template: path.resolve(__dirname, 'index.html'),
-            filename: 'applet/animation/compliateAboutGSAP/main/index.html',
+            filename: 'applet/reactDeeplearn/importtool/main/index.html',
             inject: 'body',
-            chunks: ['applet/animation/compliateAboutGSAP']
+            chunks: ['applet/reactDeeplearn/importtool']
         }),
-        new HtmlWebpackPlugin({//添加在这里
-            template: path.resolve(__dirname, 'index.html'),
-            filename: 'applet/simpleTree/tree/main/index.html',
-            inject: 'body',
-            chunks: ['applet/simpleTree/tree']
-        }),
+        // new HtmlWebpackPlugin({//添加在这里
+        //     template: path.resolve(__dirname, 'index.html'),
+        //     filename: 'applet/simpleTree/tree/main/index.html',
+        //     inject: 'body',
+        //     chunks: ['applet/simpleTree/tree']
+        // }),
         // new happyPack({
         //     loaders: ['babel-loader'],
         //     threads: 2

@@ -8,8 +8,9 @@ function deepClone(thing) {
     if(typeof thing !="object"){
         return thing
     }
+    console.log(thing.__proto__.constructor)
     let newObj = new thing.__proto__.constructor;
-    // let newObj = {};
+    // let newObj = {}
     for (let key in thing) {
         newObj[key] = deepClone(thing[key])
     }
