@@ -22,7 +22,7 @@ let entries = entryTmp.entry;
 let entryTmpMap = entryTmp.template;
 
 
-// copyDir();
+copyDir();
 runCompire(['applet']);
 function copyDir(){
     config.copy.map(obj=>{

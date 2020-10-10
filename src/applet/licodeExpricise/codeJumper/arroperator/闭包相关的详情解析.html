@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>close package</title>
+</head>
+<body>
+<script type="text/javascript">
+    // 当定义了一个变量 而且在全局中任何地方没有“使用” 那么这就属于“垃圾”
+    // 例如以下的a变量 定义之后没有被使用过 就属于垃圾的范畴。 正常情况下，JavaScript的垃圾回收机制会将它“回收”。 但是因为这是一个全局变量 被注册到window身上作为属性存在。 那么window是“持有”该变量 导致无法被回收
+    // 所谓的回收指的是清除该变量和对应的内存地址
+    // var a = 10;
+
+
+
+
+
+
+    // (function() {
+    // 	var a = 10;
+    // })()
+    // 正常的垃圾回收机制 会定义内部a变量时候 检查是否有内容在使用它 如果有 那么不回收 如果没有 回收。
+    // 以上的IIFE内的a是被回收了的
+
+
+    var b = (function() {
+        var a = 10;
+        var c = 1;
+        return function() {
+            console.log(a);
+        }
+    })()
+    // IIFE内有两个变量和一个匿名函数 其中匿名函数被返回 被全局中的变量b持有
+    // 所以函数不会被回收 函数不会被回收导致函数内的任何变量都不会被回收 函数内用到了变量a 所以a不会被回收 变量c是会被回收的
+
+
+    function fun() {
+        var a =10;
+        return function() {
+            a++;
+            console.log(a);
+        }
+    }
+
+    var fun1 = fun(); // 此时生成一个闭包 闭包内有一个变量a和一个匿名函数 匿名函数每一次执行都会改变a
+    fun1()
+    var fun2 = fun(); // 此时又生成一个闭包 闭包内又有一个变量a和一个匿名函数 这里的变量a和匿名函数与上面的代码生成的变量a和匿名函数是不同的两份。
+    fun2()
+
+</script>
+</body>
+</html>
