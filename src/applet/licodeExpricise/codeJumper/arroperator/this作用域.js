@@ -127,7 +127,7 @@ var obj = {
 obj.ss() //??
 */
 /**/
-var val = 1
+var val = 1;
 var obj = {
     val : 2,
     dbl : function() {
