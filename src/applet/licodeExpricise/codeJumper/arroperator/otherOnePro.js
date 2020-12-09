@@ -36,30 +36,30 @@ class MyPromise {
                 while (cb = this._fulfilledQueues.shift()) {
                     cb(value)
                 }
-            }
+            };
             // 依次执行失败队列中的函数，并清空队列
             const runRejected = (error) => {
                 let cb;
                 while (cb = this._rejectedQueues.shift()) {
                     cb(error)
                 }
-            }
+            };
             /* 如果resolve的参数为Promise对象，则必须等待该Promise对象状态改变后,
               当前Promsie的状态才会改变，且状态取决于参数Promsie对象的状态
             */
             if (val instanceof MyPromise) {
                 val.then(value => {
-                    this._value = value
+                    this._value = value;
                     runFulfilled(value)
                 }, err => {
-                    this._value = err
+                    this._value = err;
                     runRejected(err)
                 })
             } else {
-                this._value = val
+                this._value = val;
                 runFulfilled(val)
             }
-        }
+        };
         // 为了支持同步的Promise，这里采用异步调用
         setTimeout(run, 0)
     }
@@ -102,7 +102,7 @@ class MyPromise {
                     // 如果函数执行出错，新的Promise对象的状态为失败
                     onRejectedNext(err)
                 }
-            }
+            };
             // 封装一个失败时执行的函数
             let rejected = error => {
                 try {
@@ -159,8 +159,8 @@ class MyPromise {
             /**
              * 返回值的集合
              */
-            let values = []
-            let count = 0
+            let values = [];
+            let count = 0;
             for (let [i, p] of list.entries()) {
                 // 数组参数如果不是MyPromise实例，先调用MyPromise.resolve
                 this.resolve(p).then(res => {
@@ -195,3 +195,4 @@ class MyPromise {
         );
     }
 }
+

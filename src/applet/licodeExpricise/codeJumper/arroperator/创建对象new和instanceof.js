@@ -68,3 +68,19 @@ Function.prototype.apply2 = function(content,...args){
   delete obj.fnnn;
   return result
 };
+
+function A(){
+    this.aa = 'aa'
+}
+A.prototype.af = function(){
+    console.log(this.aa)
+};
+let a = new A();
+a.af();
+console.log(a.__proto__);
+console.log(A.prototype.__proto__);
+console.log(obj.__proto__);
+
+Function.prototype._bind = function(content,...args){
+
+};

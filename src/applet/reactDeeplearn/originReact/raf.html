@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RequestAnimateFrame</title>
+</head>
+<body>
+    <div style="width: 0;height: 20px;background-color: crimson"></div>
+    <button>开始</button>
+    <script>
+        const div = document.querySelector('div');
+        const button = document.querySelector('button');
+        let startTime = null;
+        function progress() {
+            if(div.offsetWidth < 100){
+                div.style.width = div.offsetWidth +1+'px';
+                div.innerHTML = div.offsetWidth + '%';
+                console.log(Date.now()-startTime+'ms');
+                startTime = Date.now();
+                requestAnimationFrame(progress)
+            }
+        }
+        button.onclick = function start() {
+            startTime = Date.now();
+            requestAnimationFrame(progress)
+        };
+    </script>
+</body>
+</html>
