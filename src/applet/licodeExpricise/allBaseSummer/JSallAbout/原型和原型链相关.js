@@ -1,12 +1,11 @@
 /*
 1.什么是原型
-
+原型是对象的一个属性，可以通过_proto_来访问。
 2.什么是原型链
+原型的特性就是当访问对象的属性时，对象首先会在自身上取寻找，如果没有则会去原型上去寻找；还是找不到的话，则回去原型的原型上去寻找，这样一个链式的寻找过程，就构成了原型链
+obj._proto_._proto_
 * */
-
-
-
-
+// NEW
 function New(fn ,...arg) {
 /*
 1.创建一个空对象
@@ -22,7 +21,25 @@ function New(fn ,...arg) {
     }
     return result
 }
-
+//extends
+function myExtends(child,father){
+    /*保存原子类上的方法
+    let fatherObj = Object.create(father.prototype)
+    for (let i in child.prototype){
+        fatherObj[i] = child.prototype[i]
+    }
+    */
+    child.prototype = Object.create(father.prototype);
+    father.call(child.prototype);
+    child.prototype.constructor = child;
+}
+//createObj
+function ObjCreate(proto,propertiesObject){
+    const result = {};
+    Object.setPrototypeOf(result,proto);
+    Object.defineProperties(result,propertiesObject);
+    return result
+}
 
 //a instanceof b 判断实例的类型是否是右边的构造函数的实例
 function InstanceOf(left , right) {
@@ -69,7 +86,7 @@ Object.defineProperties(obj, {
     // etc. etc.
 });
 
-
+//apply
 Function.prototype.apply2 = function(content,...args){
   let obj = content ? Object(content):window;
   obj.fnnn = this;
@@ -89,7 +106,3 @@ a.af();
 console.log(a.__proto__);
 console.log(A.prototype.__proto__);
 console.log(obj.__proto__);
-
-Function.prototype._bind = function(content,...args){
-
-};
